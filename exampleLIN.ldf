@@ -1,0 +1,294 @@
+LIN_description_file ;
+LIN_protocol_version = "2.0" ;
+LIN_language_version = "2.0" ;
+LIN_speed = 19.200 kbps ;
+Nodes {
+    Master:MB_LINMaster,1.0000 ms,0.0000 ms ;
+    Slaves:iStars_LINSlave;
+}
+Signals {
+    Aborted_Crank:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Anticip_Timeout:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Bridge_Fault:1,0x0,iStars_LINSlave,MB_LINMaster;
+    CRK_State:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Chip_ID:8,0x00,iStars_LINSlave,MB_LINMaster;
+    Cut_Off_Speed:4,0x0,MB_LINMaster,iStars_LINSlave;
+    Demag_Fault:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Derat_Shift:3,0x0,MB_LINMaster,iStars_LINSlave;
+    Derating:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Exc_Current:8,0x00,iStars_LINSlave,MB_LINMaster;
+    Exc_Current_Limit:8,0x00,iStars_LINSlave,MB_LINMaster;
+    Exc_Duty_Cycle:5,0x0,iStars_LINSlave,MB_LINMaster;
+    Exc_Fault:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Exc_Limitation:8,0x00,MB_LINMaster,iStars_LINSlave;
+    INH_CRK_State:1,0x0,iStars_LINSlave,MB_LINMaster;
+    LIN_Com_Error:1,0x0,iStars_LINSlave,MB_LINMaster;
+    LoadDump:1,0x0,iStars_LINSlave,MB_LINMaster;
+    MM_Request:3,0x1,MB_LINMaster,iStars_LINSlave;
+    MM_State:3,0x0,iStars_LINSlave,MB_LINMaster;
+    MS_Fault:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Machine_ID:5,0x0,iStars_LINSlave,MB_LINMaster;
+    NotUsed:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Overheating:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Overvoltage:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Ramp_Time:4,0x0,MB_LINMaster,iStars_LINSlave;
+    Reg_Blind:2,0x0,MB_LINMaster,iStars_LINSlave;
+    Reg_Set_Voltage:8,0xA0,MB_LINMaster,iStars_LINSlave;
+    Rot_Speed:8,0x00,iStars_LINSlave,MB_LINMaster;
+    SH_Timeout:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Stalled_Rotor:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Stop_Start_Warning:1,0x0,iStars_LINSlave,MB_LINMaster;
+    Supplier_ID:3,0x0,iStars_LINSlave,MB_LINMaster;
+    Temperature:6,0x0,iStars_LINSlave,MB_LINMaster;
+    Undervoltage:1,0x0,iStars_LINSlave,MB_LINMaster;
+    iStARS_Voltage:8,0x00,iStars_LINSlave,MB_LINMaster;
+}
+Frames {
+    ID_DATA:0x00,iStars_LINSlave,2{
+        Supplier_ID,0;
+        Machine_ID,3;
+        Chip_ID,8;
+    }
+    LIN_CONTROL:0x20,MB_LINMaster,4{
+        Reg_Set_Voltage,0;
+        Ramp_Time,8;
+        Cut_Off_Speed,12;
+        Exc_Limitation,16;
+        Derat_Shift,24;
+        MM_Request,27;
+        Reg_Blind,30;
+    }
+    LIN_STATE:0x30,iStars_LINSlave,8{
+        MM_State,0;
+        Exc_Duty_Cycle,3;
+        Exc_Current,8;
+        Rot_Speed,16;
+        Temperature,24;
+        Derating,30;
+        Overheating,31;
+        iStARS_Voltage,32;
+        Exc_Current_Limit,40;
+        CRK_State,48;
+        INH_CRK_State,49;
+        Stop_Start_Warning,50;
+        LIN_Com_Error,51;
+        NotUsed,52;
+        Anticip_Timeout,53;
+        Stalled_Rotor,54;
+        Aborted_Crank,55;
+        SH_Timeout,56;
+        Exc_Fault,57;
+        Demag_Fault,58;
+        Bridge_Fault,59;
+        MS_Fault,60;
+        Overvoltage,61;
+        LoadDump,62;
+        Undervoltage,63;
+    }
+}
+Node_attributes {
+    iStars_LINSlave {
+        LIN_protocol = 2.0 ;
+        configured_NAD = 0x05 ;
+       }
+}
+Schedule_tables {
+    Nissan {
+        LIN_CONTROL delay 10.0000 ms ;
+        LIN_STATE delay 10.0000 ms ;
+    }
+}
+Signal_encoding_types {
+    Aborted_Crank_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Anticip_Timeout_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Bridge_Fault_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Cut_Off_Speed_Sig_Type {
+        logical_value,0x00,"2400 rpm" ;
+        logical_value,0x01,"2530 rpm" ;
+        logical_value,0x02,"2670 rpm" ;
+        logical_value,0x03,"2820 rpm" ;
+        logical_value,0x04,"3000 rpm" ;
+        logical_value,0x05,"3200 rpm" ;
+        logical_value,0x06,"3430 rpm" ;
+        logical_value,0x07,"3690 rpm" ;
+        logical_value,0x08,"4000 rpm" ;
+        logical_value,0x09,"4360 rpm" ;
+        logical_value,0x0A,"4800 rpm" ;
+        logical_value,0x0B,"5330 rpm" ;
+        logical_value,0x0C,"6000 rpm" ;
+        logical_value,0x0D,"6860 rpm" ;
+        logical_value,0x0E,"8000 rpm" ;
+        logical_value,0x0F,"Always active" ;
+    }
+    Demag_Fault_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Derat_Shift_Sig_Type {
+        logical_value,0x00,"0" ;
+        logical_value,0x01,"-16" ;
+        logical_value,0x02,"-12" ;
+        logical_value,0x03,"-8" ;
+        logical_value,0x04,"-4" ;
+        logical_value,0x05,"Invalid" ;
+        logical_value,0x06,"Invalid" ;
+        logical_value,0x07,"Invalid" ;
+    }
+    Exc_Current_Sig_Type {
+        physical_value,0,255,0.1000,0.0000,"A" ;
+    }
+    Exc_Current_Limit_Sig_Type {
+        physical_value,0,160,0.1000,0.0000,"A" ;
+    }
+    Exc_Duty_Cycle_Sig_Type {
+        physical_value,0,32,3.2300,0.0000,"%" ;
+    }
+    Exc_Fault_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Exc_Limitation_Sig_Type {
+        physical_value,0,160,0.1000,0.0000 ;
+    }
+    INH_CRK_State_Sig_Type {
+        logical_value,0x00,"Inhibited" ;
+        logical_value,0x01,"Allowed" ;
+    }
+    LIN_Com_Error_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    LoadDump_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    MM_Request_Sig_Type {
+        logical_value,0x00,"NEUTRAL" ;
+        logical_value,0x01,"GENERATOR" ;
+        logical_value,0x02,"RESTART" ;
+        logical_value,0x03,"FIRST START" ;
+        logical_value,0x04,"IDLE PREFLUX" ;
+        logical_value,0x05,"STALLING HELP" ;
+        logical_value,0x06,"Forbidden" ;
+        logical_value,0x07,"Forbidden 2" ;
+    }
+    MM_State_Sig_Type {
+        logical_value,0x00,"NEUTRAL" ;
+        logical_value,0x01,"GENERATOR" ;
+        logical_value,0x02,"STARTER" ;
+        logical_value,0x03,"START ANTICIPATION" ;
+        logical_value,0x04,"IDLE PREFLUX" ;
+        logical_value,0x05,"STALLING HELP" ;
+        logical_value,0x06,"Forbidden" ;
+        logical_value,0x07,"Forbidden 2" ;
+    }
+    MS_Fault_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Overheating_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Overvoltage_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Ramp_Time_Sig_Type {
+        physical_value,0,0,1.0000,0.0000,"s" ;
+        logical_value,0x01,"0.25 s" ;
+        logical_value,0x02,"0.5 s" ;
+        logical_value,0x03,"0.75 s" ;
+        logical_value,0x04,"1 s" ;
+        logical_value,0x05,"2 s" ;
+        logical_value,0x06,"3 s" ;
+        logical_value,0x07,"4 s" ;
+        logical_value,0x08,"5 s" ;
+        logical_value,0x09,"6 s" ;
+        logical_value,0x0A,"7 s" ;
+        logical_value,0x0B,"8 s" ;
+        logical_value,0x0C,"9 s" ;
+        logical_value,0x0D,"10 s" ;
+        logical_value,0x0E,"12 s" ;
+        logical_value,0x0F,"15 s" ;
+    }
+    Reg_Blind_Sig_Type {
+        logical_value,0x00,"3 %" ;
+        logical_value,0x01,"12 %" ;
+        logical_value,0x02,"No Battery" ;
+    }
+    Reg_Set_Voltage_Sig_Type {
+        physical_value,0,256,0.0250,10.6000,"V" ;
+    }
+    Rot_Speed_Sig_Type {
+        physical_value,0,0,75.0000,0.0000,"RPM" ;
+        logical_value,0xFF,"Postion sensor failure" ;
+    }
+    SH_Timeout_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Stalled_Rotor_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Stop_Start_Warning_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    Temperature_Sig_Type {
+        physical_value,10,11,4.0000,-42.0000,"°C" ;
+        logical_value,0x3F,"Temperature sensor failure" ;
+    }
+    Undervoltage_Sig_Type {
+        logical_value,0x00,"NoFault" ;
+        logical_value,0x01,"Fault" ;
+    }
+    iStARS_Voltage_Sig_Type {
+        physical_value,0,256,0.0250,10.6000,"V" ;
+    }
+    StandardPhys_Sig_Type {
+        physical_value,0,0,1.0000,0.0000 ;
+    }
+}
+Signal_representation {
+    Aborted_Crank_Sig_Type:Aborted_Crank;
+    Anticip_Timeout_Sig_Type:Anticip_Timeout;
+    Bridge_Fault_Sig_Type:Bridge_Fault;
+    Cut_Off_Speed_Sig_Type:Cut_Off_Speed;
+    Demag_Fault_Sig_Type:Demag_Fault;
+    Derat_Shift_Sig_Type:Derat_Shift;
+    Exc_Current_Sig_Type:Exc_Current;
+    Exc_Current_Limit_Sig_Type:Exc_Current_Limit;
+    Exc_Duty_Cycle_Sig_Type:Exc_Duty_Cycle;
+    Exc_Fault_Sig_Type:Exc_Fault;
+    Exc_Limitation_Sig_Type:Exc_Limitation;
+    INH_CRK_State_Sig_Type:INH_CRK_State;
+    LIN_Com_Error_Sig_Type:LIN_Com_Error;
+    LoadDump_Sig_Type:LoadDump;
+    MM_Request_Sig_Type:MM_Request;
+    MM_State_Sig_Type:MM_State;
+    MS_Fault_Sig_Type:MS_Fault;
+    Overheating_Sig_Type:Overheating;
+    Overvoltage_Sig_Type:Overvoltage;
+    Ramp_Time_Sig_Type:Ramp_Time;
+    Reg_Blind_Sig_Type:Reg_Blind;
+    Reg_Set_Voltage_Sig_Type:Reg_Set_Voltage;
+    Rot_Speed_Sig_Type:Rot_Speed;
+    SH_Timeout_Sig_Type:SH_Timeout;
+    Stalled_Rotor_Sig_Type:Stalled_Rotor;
+    Stop_Start_Warning_Sig_Type:Stop_Start_Warning;
+    Temperature_Sig_Type:Temperature;
+    Undervoltage_Sig_Type:Undervoltage;
+    iStARS_Voltage_Sig_Type:iStARS_Voltage;
+    StandardPhys_Sig_Type:CRK_State,Chip_ID,Derating,Machine_ID,NotUsed,Supplier_ID;
+}
